@@ -1,0 +1,82 @@
+{
+  "name": "holidays",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/holidays/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/holidays",
+        "index": "apps/holidays/src/index.html",
+        "baseHref": "/",
+        "main": "apps/holidays/src/main.tsx",
+        "polyfills": "apps/holidays/src/polyfills.ts",
+        "tsConfig": "apps/holidays/tsconfig.app.json",
+        "assets": ["apps/holidays/src/favicon.ico", "apps/holidays/src/assets"],
+        "styles": ["apps/holidays/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/holidays/src/environments/environment.ts",
+              "with": "apps/holidays/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "holidays:build",
+        "hmr": true,
+        "proxyConfig": "apps/holidays/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "holidays:build:development"
+        },
+        "production": {
+          "buildTarget": "holidays:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/holidays/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/holidays"],
+      "options": {
+        "jestConfig": "apps/holidays/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
